@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shop24 Grocery Cart</title>
+  <style>
+    body {
+      font-family: Arial;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+      background-color: #ffc107ff;
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .logo img {
+      max-width: 200px;
+    }
+    .product {
+      border: 1px solid #000;
+      background: #fff8dc;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+    .product img {
+      width: 100px;
+    }
+    .cart {
+      margin-top: 20px;
+      background: #fff8dc;
+      padding: 10px;
+      border: 1px solid #000;
+    }
+    input[type="number"] {
+      width: 50px;
+    }
+  </style>
+</head>
+<body>
+  <div class="logo">
+    <img src="logo_shop24.png" alt="Shop24 Logo">
+  </div>
+
+  <h2>Products</h2>
+
+  <!-- PRODUCT LIST -->
+  <div class="product">
+    <img src=[images-1.jpg](https://postimg.cc/6TdWgmJW)/>
+    <h3>Krishna Sarso Ka Tel</h3> 
+    <p>Price: ₹100.00</p>
+    <input type="number" value="1" min="1" id="qty-apple" />
+    <button onclick="addToCart('Krishna Oil', 100.00, 'qty-apple')">Add to Cart</button>
+  </div>
+
+  <div class="product">
+    <img src="https://via.placeholder.com/100" alt="Milk" />
+    <h3>Milk</h3>
+    <p>Price: ₹2.50</p>
+    <input type="number" value="1" min="1" id="qty-milk" />
+    <button onclick="addToCart('Milk', 2.50, 'qty-milk')">Add to Cart</button>
+  </div>
+
+  <!-- CART -->
+  <div class="cart">
+    <h2>Cart</h2>
+    <ul id="cart-list"></ul>
+    <p><strong>Total: ₹<span id="total">0.00</span></strong></p>
+
+     <form action="https://formsubmit.co/yusufshaikhofficial@gmail.com"
+     method="post"
+       onsubmit="return prepareOrder()">
+      <input type="hidden" name="cart_items" id="cart-items" />
+      <label>Name:</label><br>
+      <input type="text" name="name" required /><br><br>
+      <label>Mobile Number:</label><br>
+      <input type="text" name="mobile" required /><br><br>
+      <label>Address:</label><br>
+      <textarea name="address" required></textarea><br><br>
+      <button type="submit">Submit Order</button>
+    </form>
+  </div>
+
+  <script>
+    let cart = [];
+
+    function addToCart(name, price, qtyId) {
+      const qty = parseInt(document.getElementById(qtyId).value);
+      const existing = cart.find(item => item.name === name);
+      if (existing) {
+        existing.qty += qty;
+      } else {
+        cart.push({ name, price, qty });
+      }
+      updateCart();
+    }
+
+    function updateCart() {
+      const list = document.getElementById("cart-list");
+      list.innerHTML = "";
+      let total = 0;
+      cart.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = `${item.name} x ${item.qty} = ₹${(item.qty * item.price).toFixed(2)}`;
+        list.appendChild(li);
+        total += item.qty * item.price;
+      });
+      document.getElementById("total").textContent = total.toFixed(2);
+    }
+
+    function prepareOrder() {
+      const summary = cart.map(item => `${item.name} x ${item.qty} = ₹${(item.qty * item.price).toFixed(100)}`).join("\n");
+      document.getElementById("cart-items").value = summary;
+      return true;
+    }
+  </script>
+</body>
+</html>
